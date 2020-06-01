@@ -16,7 +16,7 @@ namespace DiscordBot
             potkan.SetVoiceChannelCount(3);
             potkan.SetWalkSequence(false, 1000);
             potkan.SetFollowSequence(true);
-
+            //a
             potkan.LogIn();
             potkan.SwitchChannel("FI Hell");
         }
