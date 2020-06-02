@@ -33,5 +33,12 @@ namespace DiscordBot.DriverSetUp
             waitMusicChannel = new WebDriverWait(driver, TimeSpan.FromMilliseconds(800));
         }
 
+        public void Quit() {
+            if (driver != null)
+            {
+                driver.Quit();
+            }
+        }
+
     }
 }

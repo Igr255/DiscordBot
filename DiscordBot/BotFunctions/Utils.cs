@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiscordBot.Dependencies
+namespace DiscordBot.BotFunctions
 {
-    class AudioLinks
+    public static class Utils
     {
-
+        public static BotMain potkan = new BotMain();
     }
 }

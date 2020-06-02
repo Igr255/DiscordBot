@@ -5,11 +5,14 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading;
+using System.Xml;
+
 namespace DiscordBot.BotFunctions
 {
-    class BotMain
+    public class BotMain
     {
         private bool FollowUsers = false;
         private bool WalkAround = false;
@@ -24,13 +27,16 @@ namespace DiscordBot.BotFunctions
         private int lastChannel;
         private int waitSpan;
 
+        private string UserName;
+
         private Dictionary<int, int> channelList = new Dictionary<int, int>(); //channel ID, userCount
 
 
         public void SetVoiceChannelCount(int count) { voiceChannelCount = count; }
         public void SetStartingVoiceChannelID(int count) { startingVoiceChannelID = count; lastChannel = count; }
         public void SetFollowSequence(bool check) { FollowUsers = check; }
-        public void SetWalkSequence(bool check, int wait) { WalkAround = check; waitSpan = wait; }
+        public void SetWalkSequence(bool check, int wait=1000) { WalkAround = check; waitSpan = wait; }
+        public void SetCustomName(string name) { UserName = name; }
 
 
         public void LogIn()
@@ -46,7 +52,7 @@ namespace DiscordBot.BotFunctions
 
         public void SwitchChannel(string name)
         {
-            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector($"[aria-label=\"{name}\"]"))).Click();
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector($"[aria-label=\"{name}\"]"))).Click(); //switch to a server by its name
 
             EventFiringWebDriver efw = new EventFiringWebDriver(d.Driver);
 
@@ -55,30 +61,52 @@ namespace DiscordBot.BotFunctions
             d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//*[@id=\"channels-{startingVoiceChannelID}\"]/div/div[1]"))).Click();
 
             d.Wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("button-3zdF3z"))).Click(); //clicks popup after joining a channel
-            Thread.Sleep(5000);
+
             efw.ExecuteScript("document.querySelector('#app-mount > div.app-1q1i1E > div > div.layers-3iHuyZ.layers-3q14ss > div > div > div > div.content-98HsJk > div.sidebar-2K8pFh.hasNotice-1XRy4h > nav > div.scrollerWrap-2lJEkd.scrollerThemed-2oenus.themeGhostHairline-DBD-2d.scrollerFade-1Ijw5y > div').scrollTop=9999");
-            //d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"channels-28\"]/div/div[1]"))).Click();
 
-
-
-            if (FollowUsers)
+            ///
+            if (UserName != null)
             {
-                Follow();
+                ChangeName(name);
             }
-            else if (WalkAround)
-            {
-                Walk();
-            }
+
+            CheckIfChannelsAreEmpty();
+            ///
         }
 
-        public void Follow()
-        { //TODO walk around when noone's connected, walk smoothly towards the channel, follow specific person 
-            while (FollowUsers)
-            {
-                voiceChannelID = startingVoiceChannelID;
+        public void ChangeName(string name) {
 
-                channelList.Clear();
-                for (int i = 0; i < voiceChannelCount; i++)
+            IJavaScriptExecutor ex = (IJavaScriptExecutor)d.Driver;
+
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("[aria-label='User Settings']"))).Click();
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"userInfoViewingButton-2-jbH9 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeSmall-2cSMqn grow-q77ONN\"]"))).Click();            
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"inputDefault-_djjkz input-cIJ7To multiInputField-1x_Zdx\"]")));
+
+            ///NameSet///
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"inputDefault-_djjkz input-cIJ7To multiInputField-1x_Zdx\"]")));
+            IWebElement NameElement = d.Driver.FindElement(By.XPath("//*[@class=\"inputDefault-_djjkz input-cIJ7To multiInputField-1x_Zdx\"]"));
+            ex.ExecuteScript($"arguments[0].value='{UserName}';", NameElement);
+
+
+            ///PasswordSet///
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@name=\"password\"]"))).SendKeys(cr[1]);
+
+            ///Save///
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"button-38aScr lookFilled-1Gx00P colorGreen-29iAKY sizeSmall-2cSMqn grow-q77ONN\"]"))).Click();
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"closeButton-1tv5uR\"]"))).Click();
+            
+
+        }
+
+        public void CheckIfChannelsAreEmpty()
+        {
+            while (true)
+            {
+                voiceChannelID = startingVoiceChannelID; //count reset
+
+                channelList.Clear(); //dict reset
+
+                for (int i = 0; i < voiceChannelCount; i++) //counting number of users in each channel
                 {
                     IReadOnlyList<IWebElement> userCount = d.Driver.FindElements(By.XPath($"//*[@class='containerDefault-1ZnADq' and div/@id='channels-{voiceChannelID}']/div/div/div/div"));
 
@@ -88,47 +116,62 @@ namespace DiscordBot.BotFunctions
                     }
                     else
                     {
-                        channelList.Add(voiceChannelID, userCount.Count - 1);
-                    }
+                        channelList.Add(voiceChannelID, userCount.Count - 1); // -1 cause of some random extra div 
+                    }     
 
-                    /*if(channelList.All(d => d.Value <= 0)){
-                        
-                        waitSpan = 1000;
-                        Walk();
-                    }*/
-
-                    voiceChannelID++;
+                    voiceChannelID++;                   
                 }
 
-                var switchTo = channelList.FirstOrDefault(x => x.Value == channelList.Values.Max()).Key;
-                lastChannel = switchTo;
+                //// gets max value and the channel it belongs to
+                var maxPair = channelList.FirstOrDefault(x => x.Value == channelList.Values.Max());
+                var value = maxPair.Value;
+                var maxChannel = maxPair.Key;
+                ////
+                
 
-                try
+                lastChannel = maxChannel; //setting the last channel number
+
+                if (maxChannel >= startingVoiceChannelID && value > 0 && FollowUsers) //if bot finds users
                 {
-                    d.WaitMusicChannel.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app-mount\"]/div[4]/div[2]/div/form/div[2]/button"))).Click();
+                    Follow(maxChannel);
                 }
-                catch { }
-                d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//*[@id=\"channels-{switchTo}\"]/div/div[1]"))).Click();
+                else if ((maxChannel >= startingVoiceChannelID && value <= 0) || WalkAround) //if all channels are empty
+                {
+                    Walk();
+                }
+
 
                 d.Sleep(100);
             }
+
+
+        }
+
+        public void Follow(int switchTo)
+        { //TODO walk around when noone's connected(done), walk smoothly towards the channel, follow specific person
+            try
+            {
+                d.WaitMusicChannel.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app-mount\"]/div[4]/div[2]/div/form/div[2]/button"))).Click();
+            }
+            catch { }
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//*[@id=\"channels-{switchTo}\"]/div/div[1]"))).Click();          
+            
         }
 
         public void Walk()
         {
-            while (WalkAround)
+            
+            int rnd = random.Next(startingVoiceChannelID, startingVoiceChannelID + voiceChannelCount);
+
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//*[@id=\"channels-{rnd}\"]/div/div[1]"))).Click();
+            try
             {
-                int rnd = random.Next(startingVoiceChannelID, startingVoiceChannelID + voiceChannelCount);
-
-                d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//*[@id=\"channels-{rnd}\"]/div/div[1]"))).Click();
-                try
-                {
-                    d.WaitMusicChannel.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app-mount\"]/div[4]/div[2]/div/form/div[2]/button"))).Click();
-                }
-                catch { }
-
-                d.Sleep(waitSpan);
+                d.WaitMusicChannel.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app-mount\"]/div[4]/div[2]/div/form/div[2]/button"))).Click();
             }
+            catch { }
+
+            d.Sleep(waitSpan);
+            
         }
     }
 }

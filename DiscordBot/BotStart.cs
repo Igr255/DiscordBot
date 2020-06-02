@@ -9,16 +9,19 @@ namespace DiscordBot
 {
     class BotStart
     {
-        BotMain potkan = new BotMain();
+        private string serverName;
+
+        public void SetServerName(string name){ serverName = name; }
+        
         public void Test1()
         {
-            potkan.SetStartingVoiceChannelID(26);
-            potkan.SetVoiceChannelCount(3);
-            potkan.SetWalkSequence(false, 1000);
-            potkan.SetFollowSequence(true);
-            //a
-            potkan.LogIn();
-            potkan.SwitchChannel("FI Hell");
+            //Utils.potkan.SetStartingVoiceChannelID(26);
+            //Utils.potkan.SetVoiceChannelCount(3);
+            //Utils.potkan.SetWalkSequence(true, 2000);
+            //Utils.potkan.SetFollowSequence(true);
+
+            Utils.potkan.LogIn();//TODO osetrit if empty
+            Utils.potkan.SwitchChannel(serverName);
         }
 
     }
