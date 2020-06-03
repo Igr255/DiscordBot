@@ -37,8 +37,8 @@ namespace DiscordBot
         
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            
+            BotStart.thread.Abort();
+            Utils.potkan.d.Quit(); // TODO idk ci sa to ma takto vypinat xd
         }
 
         ///TEXTBOXES///

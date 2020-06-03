@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DiscordBot
@@ -10,6 +11,7 @@ namespace DiscordBot
     class BotStart
     {
         private string serverName;
+        public static Thread thread;
 
         public void SetServerName(string name){ serverName = name; }
         
@@ -20,8 +22,12 @@ namespace DiscordBot
             //Utils.potkan.SetWalkSequence(true, 2000);
             //Utils.potkan.SetFollowSequence(true);
 
-            Utils.potkan.LogIn();//TODO osetrit if empty
-            Utils.potkan.SwitchChannel(serverName);
+            thread = new Thread(() =>
+            {
+                Utils.potkan.LogIn();//TODO osetrit if empty
+                Utils.potkan.SwitchChannel(serverName);
+            } );
+            thread.Start();
         }
 
     }
