@@ -8,9 +8,9 @@
         Title="PotkanBot" Height="450" Width="254" Icon="Ppopega.png" Background="#FFBBB9B9" BorderBrush="#FFC5FF00" Foreground="#FF571313">
     <Grid Margin="0,0,558,0">
         <Button x:Name="StartButton" Content="Start Bot" HorizontalAlignment="Left" Height="25" Margin="15,375,-115,0" VerticalAlignment="Top" Width="100" Click="StartButton_Click"/>
-        <TextBox x:Name="FstChannelID" HorizontalAlignment="Left" Height="20" Margin="147,66,-217,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="TextBox_TextChanged" SpellCheck.IsEnabled="True" RenderTransformOrigin="0.5,0.5" Text="17"/>
+        <TextBox x:Name="FstChannelID" HorizontalAlignment="Left" Height="20" Margin="147,66,-217,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="TextBox_TextChanged" SpellCheck.IsEnabled="True" RenderTransformOrigin="0.5,0.5" Text="6"/>
         <Label Content="Enter Channel ID :" HorizontalAlignment="Left" Margin="32,60,-137,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="0.5,0.5"/>
-        <TextBox x:Name="ChannelCount" HorizontalAlignment="Left" Height="20" Margin="147,101,-217,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="ChannelCount_TextChanged" RenderTransformOrigin="0.5,0.5" Text="4"/>
+        <TextBox x:Name="ChannelCount" HorizontalAlignment="Left" Height="20" Margin="147,101,-217,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="ChannelCount_TextChanged" RenderTransformOrigin="0.5,0.5" Text="11"/>
         <Label Content="VoiceChannelCount :&#xD;&#xA;" HorizontalAlignment="Left" Height="25" Margin="17,96,-152,0" VerticalAlignment="Top" Width="135" RenderTransformOrigin="0.5,0.5"/>
         <Label Content="SetWalkSequence :" HorizontalAlignment="Left" Height="25" Margin="27,128,-142,0" VerticalAlignment="Top" Width="115" RenderTransformOrigin="0.5,0.5"/>
         <CheckBox Content="CheckBox" HorizontalAlignment="Left" Height="5" Margin="167,146,-167,0" VerticalAlignment="Top" Width="0" RenderTransformOrigin="0.5,0.5">
@@ -39,7 +39,7 @@
         <CheckBox x:Name="SetSmoothFollow" Content="CheckBox" HorizontalAlignment="Left" Height="15" Margin="147,184,-162,0" VerticalAlignment="Top" Width="15" Checked="SetSmoothFollow_Checked" RenderTransformOrigin="0.5,0.5"/>
         <Label Content="SetSmoothFollow :" HorizontalAlignment="Left" Height="25" Margin="27,178,-142,0" VerticalAlignment="Top" Width="115" RenderTransformOrigin="0.5,0.5"/>
         <Label Content="Enter Server Name :" HorizontalAlignment="Left" Margin="22,29,-137,0" VerticalAlignment="Top" Width="115"/>
-        <TextBox x:Name="ServerNameBox" HorizontalAlignment="Left" Height="20" Margin="147,35,-217,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="ServerNameBox_TextChanged" Text="Not BCH"/>
+        <TextBox x:Name="ServerNameBox" HorizontalAlignment="Left" Height="20" Margin="147,35,-217,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="ServerNameBox_TextChanged" Text="Patkane"/>
         <Label Content="Set Name:" HorizontalAlignment="Left" Margin="22,270,-95,0" VerticalAlignment="Top" Width="73"/>
         <TextBox x:Name="NameChange" HorizontalAlignment="Left" Height="20" Margin="95,276,-183,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="88" RenderTransformOrigin="0,0.45" TextChanged="NameChange_TextChanged"/>
     </Grid>

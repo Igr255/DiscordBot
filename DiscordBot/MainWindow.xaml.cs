@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,7 +28,7 @@ namespace DiscordBot
         }
 
         BotStart bot = new BotStart();
-
+       
         ///BUTTONS///
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {                    
@@ -36,7 +37,8 @@ namespace DiscordBot
         
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            Utils.potkan.d.Quit();
+            
+            
         }
 
         ///TEXTBOXES///
@@ -79,7 +81,8 @@ namespace DiscordBot
 
         private void SetSmoothFollow_Checked(object sender, RoutedEventArgs e)
         {
-            //TODO
+            CheckBox checkBox1 = (CheckBox)sender;
+            Utils.potkan.SetSmoothFollow((bool)checkBox1.IsChecked);
         }
 
         

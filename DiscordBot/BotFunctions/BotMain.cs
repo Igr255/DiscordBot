@@ -14,8 +14,9 @@ namespace DiscordBot.BotFunctions
 {
     public class BotMain
     {
-        private bool FollowUsers = false;
-        private bool WalkAround = false;
+        private bool followUsers = false;
+        private bool walkAround = false;
+        private bool smoothFollow = false;
 
         private Random random = new Random();
         private string[] cr = { "igorros.svk@gmail.com", "cabajka666" };
@@ -26,6 +27,7 @@ namespace DiscordBot.BotFunctions
         private int voiceChannelID;
         private int lastChannel;
         private int waitSpan;
+        private int currentChannel;
 
         private string UserName;
 
@@ -34,9 +36,10 @@ namespace DiscordBot.BotFunctions
 
         public void SetVoiceChannelCount(int count) { voiceChannelCount = count; }
         public void SetStartingVoiceChannelID(int count) { startingVoiceChannelID = count; lastChannel = count; }
-        public void SetFollowSequence(bool check) { FollowUsers = check; }
-        public void SetWalkSequence(bool check, int wait=1000) { WalkAround = check; waitSpan = wait; }
-        public void SetCustomName(string name) { UserName = name; }
+        public void SetFollowSequence(bool check) { followUsers = check; }
+        public void SetSmoothFollow(bool check) { smoothFollow = check; }
+        public void SetWalkSequence(bool check, int wait=1000) { walkAround = check; waitSpan = wait; }
+        public void SetCustomName(string Uname) { UserName = Uname; }
 
 
         public void LogIn()
@@ -65,11 +68,11 @@ namespace DiscordBot.BotFunctions
             efw.ExecuteScript("document.querySelector('#app-mount > div.app-1q1i1E > div > div.layers-3iHuyZ.layers-3q14ss > div > div > div > div.content-98HsJk > div.sidebar-2K8pFh.hasNotice-1XRy4h > nav > div.scrollerWrap-2lJEkd.scrollerThemed-2oenus.themeGhostHairline-DBD-2d.scrollerFade-1Ijw5y > div').scrollTop=9999");
 
             ///
-            if (UserName != null)
+            if (UserName != null && UserName != "")
             {
-                ChangeName(name);
+                ChangeName(UserName);
             }
-
+            ///
             CheckIfChannelsAreEmpty();
             ///
         }
@@ -80,13 +83,14 @@ namespace DiscordBot.BotFunctions
 
             d.Wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("[aria-label='User Settings']"))).Click();
             d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"userInfoViewingButton-2-jbH9 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeSmall-2cSMqn grow-q77ONN\"]"))).Click();            
-            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"inputDefault-_djjkz input-cIJ7To multiInputField-1x_Zdx\"]")));
-
+            
             ///NameSet///
-            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@class=\"inputDefault-_djjkz input-cIJ7To multiInputField-1x_Zdx\"]")));
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@name=\"username\"]")));
             IWebElement NameElement = d.Driver.FindElement(By.XPath("//*[@class=\"inputDefault-_djjkz input-cIJ7To multiInputField-1x_Zdx\"]"));
             ex.ExecuteScript($"arguments[0].value='{UserName}';", NameElement);
 
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@name=\"username\"]"))).SendKeys(Keys.Space); //these need to be used for some reason
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@name=\"username\"]"))).SendKeys(Keys.Backspace);
 
             ///PasswordSet///
             d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@name=\"password\"]"))).SendKeys(cr[1]);
@@ -127,15 +131,23 @@ namespace DiscordBot.BotFunctions
                 var value = maxPair.Value;
                 var maxChannel = maxPair.Key;
                 ////
-                
 
-                lastChannel = maxChannel; //setting the last channel number
+                currentChannel = lastChannel;
 
-                if (maxChannel >= startingVoiceChannelID && value > 0 && FollowUsers) //if bot finds users
+                lastChannel = maxChannel; //setting the last channel number, also indicates next channel at this moment
+
+                if (maxChannel >= startingVoiceChannelID && value > 0 && followUsers) //if bot finds users
                 {
-                    Follow(maxChannel);
+                    if (smoothFollow)
+                    {
+                        SmoothFollow();
+                    }
+                    else
+                    {
+                        Follow(maxChannel);
+                    }
                 }
-                else if ((maxChannel >= startingVoiceChannelID && value <= 0) || WalkAround) //if all channels are empty
+                else if ((maxChannel >= startingVoiceChannelID && value <= 0) && walkAround) //if all channels are empty
                 {
                     Walk();
                 }
@@ -148,7 +160,7 @@ namespace DiscordBot.BotFunctions
         }
 
         public void Follow(int switchTo)
-        { //TODO walk around when noone's connected(done), walk smoothly towards the channel, follow specific person
+        { //TODO walk around when noone's connected(done), walk smoothly towards the channel(done), follow specific person
             try
             {
                 d.WaitMusicChannel.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app-mount\"]/div[4]/div[2]/div/form/div[2]/button"))).Click();
@@ -156,6 +168,42 @@ namespace DiscordBot.BotFunctions
             catch { }
             d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//*[@id=\"channels-{switchTo}\"]/div/div[1]"))).Click();          
             
+        }
+        
+        public void SmoothFollow() {
+            int waitTime = 500;
+            int waitTimeSpan;      
+
+            if (lastChannel >= currentChannel)
+            {
+                waitTimeSpan = (int)((waitTime / lastChannel-currentChannel) + 100);
+                for (int i = currentChannel+1; i < lastChannel+1; i++)
+                {
+                    Follow(i);
+                    d.Sleep(waitTime);
+
+                    waitTime -= waitTimeSpan;
+                    if (waitTime <= 0) {
+                        waitTime = 100;
+                    }
+                }
+            }
+
+            else if (lastChannel < currentChannel)
+            {
+                waitTimeSpan = (int)((waitTime / currentChannel - lastChannel) + 100);
+                for (int i = currentChannel-1; i > lastChannel-1; i--)
+                {
+                    Follow(i);
+                    d.Sleep(waitTime);
+
+                    waitTime -= waitTimeSpan; //check in case it does a oopsie
+                    if (waitTime <= 0)
+                    {
+                        waitTime = 100;
+                    }
+                }
+            }
         }
 
         public void Walk()
