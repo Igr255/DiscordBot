@@ -12,7 +12,7 @@
         <Label Content="Enter 1st Voice Channel" HorizontalAlignment="Left" Margin="2,170,-190,0" VerticalAlignment="Top" Width="188" RenderTransformOrigin="0.5,0.5" Foreground="#FF00B800" FontFamily="Orbitron"/>
         <TextBox x:Name="ChannelCount" HorizontalAlignment="Left" Height="20" Margin="137,197,-207,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="ChannelCount_TextChanged" RenderTransformOrigin="0.5,0.5" Text="11" Background="#FF747474" BorderBrush="Black"/>
         <Label Content="VoiceChannelCount :&#xD;&#xA;" HorizontalAlignment="Left" Height="25" Margin="2,194,-137,0" VerticalAlignment="Top" Width="135" RenderTransformOrigin="0.5,0.5" Foreground="#FF00B800" FontFamily="Orbitron"/>
-        <Label Content="SetWalkSequence :" HorizontalAlignment="Left" Height="25" Margin="2,260,-117,0" VerticalAlignment="Top" Width="115" RenderTransformOrigin="0.5,0.5" Foreground="#FF00B800" FontFamily="Orbitron"/>
+        <Label Content="SwitchChannels" HorizontalAlignment="Left" Height="25" Margin="2,260,-125,0" VerticalAlignment="Top" Width="123" RenderTransformOrigin="0.5,0.5" Foreground="#FF00B800" FontFamily="Orbitron"/>
         <CheckBox Content="CheckBox" HorizontalAlignment="Left" Height="5" Margin="167,264,-167,0" VerticalAlignment="Top" Width="0" RenderTransformOrigin="0.5,0.5">
             <CheckBox.RenderTransform>
                 <TransformGroup>
@@ -23,9 +23,9 @@
                 </TransformGroup>
             </CheckBox.RenderTransform>
         </CheckBox>
-        <CheckBox x:Name="SetWalkSequence" Content="" HorizontalAlignment="Left" Height="15" Margin="117,265,-132,0" VerticalAlignment="Top" Width="15" Checked="SetWalkSequence_Checked" RenderTransformOrigin="0.5,0.5" Background="#FF747474" BorderBrush="Black"/>
+        <CheckBox x:Name="SetWalkSequence" Content="" HorizontalAlignment="Left" Height="15" Margin="125,265,-140,0" VerticalAlignment="Top" Width="15" Checked="SetWalkSequence_Checked" RenderTransformOrigin="0.5,0.5" Background="#FF747474" BorderBrush="Black"/>
         <Button x:Name="StopButton" Content="Kill Potkan" HorizontalAlignment="Left" Height="25" Margin="130,375,-230,0" VerticalAlignment="Top" Width="100" Click="StopButton_Click" Background="#FF747474" BorderBrush="Black" FontFamily="Orbitron"/>
-        <CheckBox x:Name="SetFollowSequence" Content="" HorizontalAlignment="Left" Height="15" Margin="117,290,-132,0" VerticalAlignment="Top" Width="15" RenderTransformOrigin="1,0.333" Checked="SetFollowSequence_Checked" Background="#FF747474" BorderBrush="Black">
+        <CheckBox x:Name="SetFollowSequence" Content="" HorizontalAlignment="Left" Height="15" Margin="125,290,-140,0" VerticalAlignment="Top" Width="15" RenderTransformOrigin="1,0.333" Checked="SetFollowSequence_Checked" Background="#FF747474" BorderBrush="Black">
             <CheckBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -45,7 +45,7 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <CheckBox x:Name="SetSmoothFollow" Content="CheckBox" HorizontalAlignment="Left" Height="15" Margin="117,315,-132,0" VerticalAlignment="Top" Width="15" Checked="SetSmoothFollow_Checked" RenderTransformOrigin="0.5,0.5" Background="#FF747474" BorderBrush="Black"/>
+        <CheckBox x:Name="SetSmoothFollow" Content="CheckBox" HorizontalAlignment="Left" Height="15" Margin="125,315,-140,0" VerticalAlignment="Top" Width="15" Checked="SetSmoothFollow_Checked" RenderTransformOrigin="0.5,0.5" Background="#FF747474" BorderBrush="Black"/>
         <Label Content="SmoothFollow" HorizontalAlignment="Left" Height="25" Margin="2,310,-112,0" VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.477,1.2" Foreground="#FF00B800" FontFamily="Orbitron"/>
         <Label Content="Enter Server Name" HorizontalAlignment="Left" Margin="80,5,-227,0" VerticalAlignment="Top" Width="147" Foreground="#FF00B800" FontFamily="Orbitron"/>
         <TextBox x:Name="ServerNameBox" HorizontalAlignment="Left" Height="20" Margin="120,35,-190,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="ServerNameBox_TextChanged" Text="Patkane" Background="#FF747474" BorderBrush="Black"/>

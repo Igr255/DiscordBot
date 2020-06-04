@@ -36,9 +36,9 @@ namespace DiscordBot.BotFunctions
 
         public void SetVoiceChannelCount(int count) { voiceChannelCount = count; }
         public void SetStartingVoiceChannelID(int count) { startingVoiceChannelID = count; lastChannel = count; }
-        public void SetFollowSequence(bool check) { followUsers = check; }
-        public void SetSmoothFollow(bool check) { smoothFollow = check; }
-        public void SetWalkSequence(bool check, int wait=1000) { walkAround = check; waitSpan = wait; }
+        public void SetFollowSequence(bool checkFollow) { followUsers = checkFollow; }
+        public void SetSmoothFollow(bool checkSmoothFollow) { smoothFollow = checkSmoothFollow; }
+        public void SetWalkSequence(bool checkWalk, int wait=1000) { walkAround = checkWalk; waitSpan = wait; }
         public void SetCustomName(string Uname) { UserName = Uname; }
 
 
@@ -65,6 +65,8 @@ namespace DiscordBot.BotFunctions
 
             d.Wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("button-3zdF3z"))).Click(); //clicks popup after joining a channel
 
+            d.Wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("close-relY5R"))).Click(); //popup on top
+            
             efw.ExecuteScript("document.querySelector('#app-mount > div.app-1q1i1E > div > div.layers-3iHuyZ.layers-3q14ss > div > div > div > div.content-98HsJk > div.sidebar-2K8pFh.hasNotice-1XRy4h > nav > div.scrollerWrap-2lJEkd.scrollerThemed-2oenus.themeGhostHairline-DBD-2d.scrollerFade-1Ijw5y > div').scrollTop=9999");
 
             ///
