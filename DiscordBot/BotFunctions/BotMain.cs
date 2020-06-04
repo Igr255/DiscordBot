@@ -30,6 +30,7 @@ namespace DiscordBot.BotFunctions
         private int currentChannel;
 
         private string UserName;
+        private string ChannelName;
 
         private Dictionary<int, int> channelList = new Dictionary<int, int>(); //channel ID, userCount
 
@@ -40,6 +41,7 @@ namespace DiscordBot.BotFunctions
         public void SetSmoothFollow(bool checkSmoothFollow) { smoothFollow = checkSmoothFollow; }
         public void SetWalkSequence(bool checkWalk, int wait=1000) { walkAround = checkWalk; waitSpan = wait; }
         public void SetCustomName(string Uname) { UserName = Uname; }
+        public void SetCommandChannel(string Cname) { ChannelName = Cname; }
 
 
         public void LogIn()
@@ -69,6 +71,8 @@ namespace DiscordBot.BotFunctions
             
             efw.ExecuteScript("document.querySelector('#app-mount > div.app-1q1i1E > div > div.layers-3iHuyZ.layers-3q14ss > div > div > div > div.content-98HsJk > div.sidebar-2K8pFh.hasNotice-1XRy4h > nav > div.scrollerWrap-2lJEkd.scrollerThemed-2oenus.themeGhostHairline-DBD-2d.scrollerFade-1Ijw5y > div').scrollTop=9999");
 
+            //d.Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath($"//*[@class=\"name-3_Dsmg\" and text()=\"{ChannelName}\"]"))).Click(); //read commands in a channel
+            
             ///
             if (UserName != null && UserName != "")
             {
