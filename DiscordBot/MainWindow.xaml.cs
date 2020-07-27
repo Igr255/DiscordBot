@@ -40,7 +40,7 @@ namespace DiscordBot
             try { BotStart.thread.Abort(); }
             catch (Exception ex) { }
             
-            Utils.potkan.d.Quit();
+            Utils.d.Quit();
             Application.Current.Shutdown();
         }
 

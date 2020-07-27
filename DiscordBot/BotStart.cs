@@ -12,6 +12,7 @@ namespace DiscordBot
     {
         private string serverName;
         public static Thread thread;
+        
 
         public void SetServerName(string name){ serverName = name; }
         
@@ -21,6 +22,8 @@ namespace DiscordBot
             //Utils.potkan.SetVoiceChannelCount(3);
             //Utils.potkan.SetWalkSequence(true, 2000);
             //Utils.potkan.SetFollowSequence(true);
+
+           
 
             thread = new Thread(() =>
             {

@@ -54,10 +54,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>453E65B4DB776B3F3366A8D9C4CD56827381FE6F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>86969693E028416AA3BA30A99EB9016B94E5646F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>DiscordBot_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>DiscordBot_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -101,6 +101,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BotFunctions\BotCommands.cs" />
     <Compile Include="BotFunctions\BotMain.cs" />
     <Compile Include="BotFunctions\Utils.cs" />
     <Compile Include="BotStart.cs" />
@@ -130,6 +131,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="DiscordBot_1_TemporaryKey.pfx" />
     <None Include="DiscordBot_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
