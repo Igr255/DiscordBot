@@ -46,7 +46,7 @@
             </Label.RenderTransform>
         </Label>
         <CheckBox x:Name="SetSmoothFollow" Content="CheckBox" HorizontalAlignment="Left" Height="15" Margin="125,315,-140,0" VerticalAlignment="Top" Width="15" Checked="SetSmoothFollow_Checked" RenderTransformOrigin="0.5,0.5" Background="#FF747474" BorderBrush="Black"/>
-        <Label Content="SmoothFollow" HorizontalAlignment="Left" Height="25" Margin="2,310,-112,0" VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.477,1.2" Foreground="#FF00B800" FontFamily="Orbitron"/>
+        <Label Content="SmoothCriminal" HorizontalAlignment="Left" Height="25" Margin="2,310,-115,0" VerticalAlignment="Top" Width="113" RenderTransformOrigin="0.477,1.2" Foreground="#FF00B800" FontFamily="Orbitron"/>
         <Label Content="Enter Server Name" HorizontalAlignment="Left" Margin="80,5,-227,0" VerticalAlignment="Top" Width="147" Foreground="#FF00B800" FontFamily="Orbitron"/>
         <TextBox x:Name="ServerNameBox" HorizontalAlignment="Left" Height="20" Margin="120,35,-190,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70" TextChanged="ServerNameBox_TextChanged" Text="Patkane" Background="#FF747474" BorderBrush="Black"/>
         <Label Content="Set Bot Name (Optional)" HorizontalAlignment="Left" Margin="2,72,-170,0" VerticalAlignment="Top" Width="168" Foreground="#FF00B800" FontFamily="Orbitron" RenderTransformOrigin="0.911,0.542"/>

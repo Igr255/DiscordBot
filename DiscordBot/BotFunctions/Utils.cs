@@ -8,6 +8,7 @@ namespace DiscordBot.BotFunctions
 {
     public static class Utils
     {
+        
         public static BotMain potkan = new BotMain();
     }
 }
